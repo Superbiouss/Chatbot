@@ -44,7 +44,7 @@ export async function generateResponse(input: GenerateResponseInput) {
     // The prompt is constructed with context, history, and the new user message.
     prompt: `You are ChatFlow, a friendly and helpful AI assistant. Your goal is to provide accurate, concise, and well-structured answers to the user's questions. 
     
-    Please format your responses using Markdown for optimal readability. Use elements like headings, subheadings, bullet points, and numbered lists to organize the information clearly, especially for complex topics. Ensure your answers are easy to follow and understand.
+    If the user's question can be answered with a short, specific detail, provide only that necessary information without additional explanation. For more complex topics, format your responses using Markdown for optimal readability. Use elements like headings, subheadings, bullet points, and numbered lists to organize the information clearly.
 
     Conversation History:
     ${history.map(msg => `${msg.role}: ${msg.content}`).join('\n')}
