@@ -56,8 +56,8 @@ export default function ChatWidget() {
     if (!input.trim() || isLoading || !sessionId) return;
 
     const userMessage: Message = { role: "user", content: input };
-    const newMessages: Message[] = [...messages, userMessage];
-    setMessages(newMessages);
+    const conversationHistory = [...messages, userMessage];
+    setMessages(conversationHistory);
     setInput("");
     setIsLoading(true);
 
@@ -82,12 +82,12 @@ export default function ChatWidget() {
           botMessage += decoder.decode(value, { stream: true });
           
           setMessages((prev) => {
-            const lastMessage = prev[prev.length - 1];
+            const newMessages = [...prev];
+            const lastMessage = newMessages[newMessages.length - 1];
             if (lastMessage.role === 'bot') {
               lastMessage.content = botMessage;
-              return [...prev.slice(0, -1), lastMessage];
             }
-            return prev;
+            return newMessages;
           });
         }
         setIsLoading(false);

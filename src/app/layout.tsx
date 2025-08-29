@@ -3,8 +3,9 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 
 export const metadata: Metadata = {
-  title: 'ChatFlow',
-  description: 'A modular chatbot framework',
+  title: 'ChatFlow - AI-Powered Modular Chatbot',
+  description: 'Engage with ChatFlow, a modular and intelligent chatbot framework designed for seamless conversation. Built with Next.js and Genkit.',
+  keywords: ['AI chatbot', 'Next.js', 'Genkit', 'chatbot framework', 'conversational AI'],
 };
 
 export default function RootLayout({
