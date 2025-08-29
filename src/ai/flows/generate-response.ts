@@ -7,6 +7,7 @@
  */
 
 import {ai} from '@/ai/genkit';
+import {generate} from 'genkit/generate';
 import {z} from 'genkit';
 
 const GenerateResponseInputSchema = z.object({
@@ -22,10 +23,10 @@ const GenerateResponseInputSchema = z.object({
 });
 export type GenerateResponseInput = z.infer<typeof GenerateResponseInputSchema>;
 
-export async function generateResponse(input: GenerateResponseInput): Promise<string> {
+export async function generateResponse(input: GenerateResponseInput) {
   const {message, history} = input;
 
-  const {text} = await ai.generate({
+  const {stream, response} = ai.generateStream({
     prompt: `You are ChatFlow, a friendly and helpful AI assistant. Your goal is to provide accurate and concise answers to the user's questions.
 
     Conversation History:
@@ -39,5 +40,14 @@ export async function generateResponse(input: GenerateResponseInput): Promise<st
     },
   });
 
-  return text;
+  const readableStream = new ReadableStream({
+    async start(controller) {
+      for await (const chunk of stream) {
+        controller.enqueue(chunk.text);
+      }
+      controller.close();
+    },
+  });
+
+  return readableStream;
 }

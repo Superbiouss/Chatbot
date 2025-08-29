@@ -10,15 +10,21 @@ export async function handleUserMessage(
   console.log(`[${sessionId}] User: ${message}`);
 
   try {
-    const response = await generateResponse({
+    const responseStream = await generateResponse({
       message,
       history: conversationHistory,
     });
-
-    console.log(`[${sessionId}] Bot: ${response}`);
-    return response;
+    return responseStream;
   } catch (error) {
     console.error(`[${sessionId}] Error processing message:`, error);
-    return "I'm sorry, but I encountered an error. Please try again later.";
+    const errorStream = new ReadableStream({
+      start(controller) {
+        controller.enqueue(
+          "I'm sorry, but I encountered an error. Please try again later."
+        );
+        controller.close();
+      },
+    });
+    return errorStream;
   }
 }

@@ -56,31 +56,56 @@ export default function ChatWidget() {
     if (!input.trim() || isLoading || !sessionId) return;
 
     const userMessage: Message = { role: "user", content: input };
-    setMessages((prev) => [...prev, userMessage]);
+    const newMessages: Message[] = [...messages, userMessage];
+    setMessages(newMessages);
     setInput("");
     setIsLoading(true);
 
     try {
-      const botResponse = await handleUserMessage(
+      const responseStream = await handleUserMessage(
         sessionId,
         input,
         messages
       );
-      setMessages((prev) => [
-        ...prev,
-        { role: "bot", content: botResponse },
-      ]);
+      
+      const reader = responseStream.getReader();
+      const decoder = new TextDecoder();
+      let botMessage = "";
+      
+      setMessages((prev) => [...prev, { role: "bot", content: "" }]);
+
+      const processStream = async () => {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          botMessage += decoder.decode(value, { stream: true });
+          
+          setMessages((prev) => {
+            const lastMessage = prev[prev.length - 1];
+            if (lastMessage.role === 'bot') {
+              lastMessage.content = botMessage;
+              return [...prev.slice(0, -1), lastMessage];
+            }
+            return prev;
+          });
+        }
+        setIsLoading(false);
+        inputRef.current?.focus();
+      };
+      
+      processStream();
+
     } catch (error) {
-      setMessages((prev) => [
+       setMessages((prev) => [
         ...prev,
         {
           role: "bot",
           content: "Sorry, something went wrong. Please try again.",
         },
       ]);
-    } finally {
-      setIsLoading(false);
-      inputRef.current?.focus();
+       setIsLoading(false);
+       inputRef.current?.focus();
     }
   };
 
@@ -98,7 +123,7 @@ export default function ChatWidget() {
             {messages.map((message, index) => (
               <ChatMessage key={index} message={message} />
             ))}
-            {isLoading && (
+            {isLoading && messages[messages.length -1].role !== 'bot' && (
               <div className="flex items-start gap-3">
                 <div className="flex size-8 shrink-0 select-none items-center justify-center rounded-full bg-primary text-primary-foreground">
                   <Bot size={20} />
