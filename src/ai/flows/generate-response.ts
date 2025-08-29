@@ -42,7 +42,9 @@ export async function generateResponse(input: GenerateResponseInput) {
   // Use ai.generateStream to get a streamable response from the AI model.
   const {stream, response} = ai.generateStream({
     // The prompt is constructed with context, history, and the new user message.
-    prompt: `You are ChatFlow, a friendly and helpful AI assistant. Your goal is to provide accurate and concise answers to the user's questions. Format your responses using Markdown for readability.
+    prompt: `You are ChatFlow, a friendly and helpful AI assistant. Your goal is to provide accurate, concise, and well-structured answers to the user's questions. 
+    
+    Please format your responses using Markdown for optimal readability. Use elements like headings, subheadings, bullet points, and numbered lists to organize the information clearly, especially for complex topics. Ensure your answers are easy to follow and understand.
 
     Conversation History:
     ${history.map(msg => `${msg.role}: ${msg.content}`).join('\n')}
