@@ -151,7 +151,7 @@ export default function ChatWidget() {
               <ChatMessage key={index} message={message} />
             ))}
             {/* Show a loading indicator while the bot is thinking. */}
-            {isLoading && messages[messages.length -1].role !== 'bot' && (
+            {isLoading && (
               <div className="flex items-start gap-3">
                 <div className="flex size-8 shrink-0 select-none items-center justify-center rounded-full bg-primary text-primary-foreground">
                   <Bot size={20} />
