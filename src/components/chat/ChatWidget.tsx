@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, FormEvent } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { Bot, Send, User, LoaderCircle } from "lucide-react";
+import { Bot, Send, User, LoaderCircle, CornerDownLeft } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -30,6 +30,7 @@ export default function ChatWidget() {
   const [isLoading, setIsLoading] = useState(false);
   const [sessionId, setSessionId] = useState<string | null>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     let storedSessionId = localStorage.getItem(SESSION_ID_KEY);
@@ -38,6 +39,7 @@ export default function ChatWidget() {
       localStorage.setItem(SESSION_ID_KEY, storedSessionId);
     }
     setSessionId(storedSessionId);
+    inputRef.current?.focus();
   }, []);
 
   useEffect(() => {
@@ -78,20 +80,21 @@ export default function ChatWidget() {
       ]);
     } finally {
       setIsLoading(false);
+      inputRef.current?.focus();
     }
   };
 
   return (
-    <Card className="w-full max-w-lg shadow-2xl rounded-xl">
-      <CardHeader className="text-center">
-        <CardTitle className="font-headline flex items-center justify-center gap-2">
+    <Card className="w-full max-w-lg shadow-2xl rounded-xl border-0 bg-card/80 backdrop-blur-sm z-10">
+      <CardHeader className="text-center border-b border-border/50">
+        <CardTitle className="font-headline flex items-center justify-center gap-2 text-xl">
           <Bot className="text-primary" />
           AI Assistant
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <ScrollArea className="h-[400px] pr-4" ref={scrollAreaRef}>
-          <div className="space-y-4">
+        <ScrollArea className="h-[450px] pr-4" ref={scrollAreaRef}>
+          <div className="space-y-6 py-6">
             {messages.map((message, index) => (
               <ChatMessage key={index} message={message} />
             ))}
@@ -100,7 +103,7 @@ export default function ChatWidget() {
                 <div className="flex size-8 shrink-0 select-none items-center justify-center rounded-full bg-primary text-primary-foreground">
                   <Bot size={20} />
                 </div>
-                <div className="flex items-center space-x-2 rounded-lg bg-muted px-4 py-2">
+                <div className="flex items-center space-x-2 rounded-lg bg-secondary px-4 py-3">
                   <LoaderCircle className="h-5 w-5 animate-spin text-muted-foreground" />
                 </div>
               </div>
@@ -108,15 +111,21 @@ export default function ChatWidget() {
           </div>
         </ScrollArea>
       </CardContent>
-      <CardFooter>
+      <CardFooter className="border-t border-border/50 pt-6">
         <form onSubmit={handleSubmit} className="flex w-full items-center gap-2">
-          <Input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Type your message..."
-            className="flex-1"
-            disabled={isLoading}
-          />
+          <div className="relative flex-1">
+            <Input
+              ref={inputRef}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Ask me anything..."
+              className="flex-1 pr-12 text-base"
+              disabled={isLoading}
+            />
+            <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground pointer-events-none">
+              <CornerDownLeft size={16} />
+            </div>
+          </div>
           <Button type="submit" size="icon" disabled={isLoading || !input.trim()}>
             <Send className="h-4 w-4" />
             <span className="sr-only">Send message</span>
