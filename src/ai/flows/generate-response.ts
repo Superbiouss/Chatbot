@@ -59,10 +59,11 @@ export async function generateResponse(input: GenerateResponseInput) {
   // Create a new ReadableStream to pipe the AI's response back to the client.
   const readableStream = new ReadableStream({
     async start(controller) {
+      const encoder = new TextEncoder();
       // Iterate through each chunk of the AI's streamed response.
       for await (const chunk of stream) {
         // Enqueue the text part of the chunk into our stream controller.
-        controller.enqueue(chunk.text);
+        controller.enqueue(encoder.encode(chunk.text));
       }
       // Close the stream once all chunks have been processed.
       controller.close();
