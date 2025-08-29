@@ -85,8 +85,8 @@ export default function ChatWidget() {
   };
 
   return (
-    <Card className="w-full max-w-lg shadow-2xl rounded-xl border-0 bg-card/80 backdrop-blur-sm z-10">
-      <CardHeader className="text-center border-b border-border/50">
+    <Card className="w-full max-w-lg shadow-xl rounded-xl border bg-card/80 backdrop-blur-sm z-10">
+      <CardHeader className="text-center border-b">
         <CardTitle className="font-headline flex items-center justify-center gap-2 text-xl">
           <Bot className="text-primary" />
           AI Assistant
@@ -111,7 +111,7 @@ export default function ChatWidget() {
           </div>
         </ScrollArea>
       </CardContent>
-      <CardFooter className="border-t border-border/50 pt-6">
+      <CardFooter className="border-t pt-6">
         <form onSubmit={handleSubmit} className="flex w-full items-center gap-2">
           <div className="relative flex-1">
             <Input
