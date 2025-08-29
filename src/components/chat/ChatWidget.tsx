@@ -145,7 +145,7 @@ export default function ChatWidget() {
       </CardHeader>
       <CardContent>
         {/* The scrollable area for chat messages. */}
-        <ScrollArea className="h-[450px] pr-4" ref={scrollAreaRef}>
+        <ScrollArea className="h-[50vh] md:h-[450px] pr-4" ref={scrollAreaRef}>
           <div className="space-y-6 py-6">
             {messages.map((message, index) => (
               <ChatMessage key={index} message={message} />

@@ -9,7 +9,7 @@ import ChatWidget from "@/components/chat/ChatWidget";
 export default function Home() {
   return (
     // The main container with flexbox layout to center content.
-    <main className="flex min-h-screen flex-col items-center justify-center p-4 md:p-8 bg-background relative">
+    <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-background relative">
       {/* Page header section */}
       <div className="w-full max-w-2xl text-center mb-8 z-10">
         {/* Main headline */}
