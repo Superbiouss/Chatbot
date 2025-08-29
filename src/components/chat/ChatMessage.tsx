@@ -1,6 +1,8 @@
 "use client";
 
 import { Bot, User } from "lucide-react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { cn } from "@/lib/utils";
 
 // Define the type for a single message object.
@@ -41,12 +43,26 @@ export function ChatMessage({ message }: { message: Message }) {
       {/* The message content bubble */}
       <div
         className={cn(
-          "max-w-[80%] rounded-lg px-4 py-3 text-sm leading-6",
+          "prose max-w-[80%] rounded-lg px-4 py-3 text-sm leading-6",
           // Style the message bubble based on the role.
           isBot ? "bg-secondary text-secondary-foreground" : "bg-primary text-primary-foreground"
         )}
       >
-        {message.content}
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
+          className="prose-sm max-w-none text-current"
+          components={{
+            // Reset heading styles to inherit from the parent bubble.
+            h1: ({node, ...props}) => <h1 className="text-current" {...props} />,
+            h2: ({node, ...props}) => <h2 className="text-current" {...props} />,
+            h3: ({node, ...props}) => <h3 className="text-current" {...props} />,
+            h4: ({node, ...props}) => <h4 className="text-current" {...props} />,
+            h5: ({node, ...props}) => <h5 className="text-current" {...props} />,
+            h6: ({node, ...props}) => <h6 className="text-current" {...props} />,
+          }}
+        >
+          {message.content}
+        </ReactMarkdown>
       </div>
     </div>
   );
