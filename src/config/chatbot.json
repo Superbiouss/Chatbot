@@ -1,0 +1,20 @@
+{
+  "intents": {
+    "Greeting": {
+      "responses": ["Hello! I'm ChatFlow, your virtual assistant. How can I help you today?", "Hi there! What can I do for you?", "Greetings! How may I assist you?"]
+    },
+    "Goodbye": {
+      "responses": ["Goodbye! Have a great day.", "See you later!", "Farewell!"]
+    },
+    "Thanks": {
+      "responses": ["You're welcome!", "No problem!", "My pleasure!"]
+    },
+    "About": {
+        "responses": ["I am ChatFlow, a modular chatbot framework designed to be reusable and platform-agnostic."]
+    },
+    "Help": {
+        "responses": ["You can ask me things like 'what can you do?', 'who are you?', or just say hello! I'm here to assist you."]
+    }
+  },
+  "fallback": "I'm sorry, I'm having trouble understanding. Could you please rephrase your question?"
+}
